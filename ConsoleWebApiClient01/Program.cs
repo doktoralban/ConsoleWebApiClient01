@@ -22,12 +22,13 @@ namespace ConsoleWebApiClient01
 
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+                new MediaTypeWithQualityHeaderValue("application/vnd.json"));
             client.DefaultRequestHeaders.Add("User-Agent", "aydin");
 
             UserModel usr = new UserModel();
             usr.KulaniciAdi = "a.turker";
-            usr.KulaniciAdi = "1234"; 
+            usr.Sifre = "1234"; 
+
             var contentUser = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(usr), Encoding.UTF8, "application/json");
              var ctn = await client.PostAsync(url.ToString(), contentUser);
 
