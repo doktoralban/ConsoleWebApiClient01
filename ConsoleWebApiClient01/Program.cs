@@ -16,8 +16,15 @@ namespace ConsoleWebApiClient01
         private static readonly HttpClient client = new HttpClient();
 
         static async Task Main(string[] args)
-        {
-            Uri url = new Uri("http://192.168.137.1/WebApiNW/Urunler/UretimdenKaldirilanlar?dsApiPass=1234");
+        { 
+            UserModel usr = new UserModel
+            {
+                KulaniciAdi = "a.turker",
+                Sifre = "1234"
+            };
+
+
+            Uri url = new Uri("http://192.168.137.1/WebApiNW/Urunler/UretimdenKaldirilanlar?dsApiPass=" + usr.Sifre);
 
 
             client.DefaultRequestHeaders.Accept.Clear();
@@ -25,16 +32,14 @@ namespace ConsoleWebApiClient01
                 new MediaTypeWithQualityHeaderValue("application/vnd.json"));
             client.DefaultRequestHeaders.Add("User-Agent", "aydin");
 
-            UserModel usr = new UserModel();
-            usr.KulaniciAdi = "a.turker";
-            usr.Sifre = "1234"; 
+           
 
             var contentUser = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(usr), Encoding.UTF8, "application/json");
-             var ctn = await client.PostAsync(url.ToString(), contentUser);
+            var ctn = await client.PostAsync(url.ToString(), contentUser);
 
             var result = await ctn.Content.ReadAsStreamAsync();
 
-            List<Product> Urunler = Utils.Deserialize<List<Product>>(result);
+            var Urunler = Utils.Deserialize<List<Product>>(result);
 
             foreach (var urun in Urunler)
             {
